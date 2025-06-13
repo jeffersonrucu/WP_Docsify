@@ -9,6 +9,7 @@ a:hover {
 
 .app-name img {
     width: 100% !important;
+    max-height: 38px;
     padding: 0 30px 0 0 !important;
 }
 
