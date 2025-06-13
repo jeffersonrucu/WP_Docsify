@@ -1,0 +1,1 @@
+* [Boas Práticas](/good-practices)

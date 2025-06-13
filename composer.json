@@ -1,0 +1,16 @@
+{
+    "name": "jeffersonrucu/wp-docsify",
+    "description": "Docsify for WordPress in a simple and practical way using the entire WordPress structure.",
+    "autoload": {
+        "psr-4": {
+            "WPDocsify\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jefferson Oliveira",
+            "email": "jefferoidtex7@gmail.com"
+        }
+    ],
+    "require": {}
+}
