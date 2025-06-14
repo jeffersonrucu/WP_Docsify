@@ -32,15 +32,34 @@ class Template
 
     public function renderTemplate($page_template)
     {
-        if (get_page_template_slug() == 'template-wp-docsify.php') {
-            if (!is_user_logged_in() || !current_user_can('administrator')) {
-                wp_redirect(wp_login_url(get_permalink()));
-                exit;
-            }
+        $page_docsify = WPDOCSIFY_DIR . '/src/templates/wp-docsify.php';
 
-            $page_template = WPDocsify_DIR . '/src/template-wp-docsify.php';
+        if (get_page_template_slug() !== 'template-wp-docsify.php') {
+            return $page_template;
         }
 
-        return $page_template;
+        if (defined('WPDOCSIFY_IS_RESTRICTED') && !WPDOCSIFY_IS_RESTRICTED) {
+            return $page_docsify;
+        }
+
+        if (!is_user_logged_in()) {
+            wp_redirect(wp_login_url(get_permalink()));
+            exit;
+        }
+
+        if (!defined('WPDOCSIFY_ALLOWED_ROLES') || !is_array(WPDOCSIFY_ALLOWED_ROLES)) {
+            wp_redirect(home_url());
+            exit;
+        }
+
+        $user = wp_get_current_user();
+        $hasAccess = array_intersect($user->roles, WPDOCSIFY_ALLOWED_ROLES);
+
+        if (empty($hasAccess)) {
+            wp_redirect(home_url());
+            exit;
+        }
+
+        return $page_docsify;
     }
 }
