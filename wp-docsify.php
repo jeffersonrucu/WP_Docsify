@@ -21,10 +21,19 @@ if ( ! defined( 'WPINC' ) ) {
 
 // if this composer did not exist.
 if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
-    die("
-        Vendor folder not found in <strong style='color:red;'>'src/wp-content/plugins/wp-docsify/vendor'</strong>,
-        please run the command <strong>'composer install'</strong>
-    ");
+    add_action( 'admin_notices', function() {
+        ?>
+            <div class="notice notice-error">
+                <p>
+                    <?php esc_html_e( 'WP Docsify plugin error: vendor folder missing. Please run composer install. The plugin was deactivated.', 'wp-docsify' ); ?>
+                </p>
+            </div>
+        <?php
+    } );
+
+    deactivate_plugins(plugin_basename(__FILE__));
+
+    return;
 }
 
 require_once __DIR__ . '/vendor/autoload.php';
@@ -37,7 +46,7 @@ use WPDocsify\Core;
 define('WPDocsify_VERSION', '1.0.0');
 define('WPDocsify_NAME', 'WP Docsify');
 define('WPDocsify_DIR', plugin_dir_path(__FILE__));
-define ('WPDocsify_URL', plugin_dir_url(__FILE__));
+define('WPDocsify_URL', plugin_dir_url(__FILE__));
 
 /**
  * The code that runs during plugin activation.
