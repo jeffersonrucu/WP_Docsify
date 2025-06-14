@@ -1,4 +1,12 @@
-# WP Docsify
+<p align="center">
+  <a href="https://docsify.js.org">
+    <img alt="docsify" src="https://docsify.js.org/_media/icon.svg">
+  </a>
+</p>
+
+<p align="center">
+  A magical documentation site generator inside wordpress.
+</p>
 
 **WP Docsify** is a WordPress plugin that allows you to create and manage documentation using [Docsify](https://docsify.js.org/), leveraging `.md` files directly within your project. It's ideal for technical projects, user manuals, or any kind of versioned technical documentation.
 
