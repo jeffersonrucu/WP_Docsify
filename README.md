@@ -2,7 +2,9 @@
 
 **WP Docsify** is a WordPress plugin that allows you to create and manage documentation using [Docsify](https://docsify.js.org/), leveraging `.md` files directly within your project. It's ideal for technical projects, user manuals, or any kind of versioned technical documentation.
 
-![image](https://github.com/user-attachments/assets/7a188236-2a47-4bb0-98ef-890f757ca264)
+![image](https://github.com/user-attachments/assets/00a41df7-1b7b-4987-80b7-6fbea95e2070)
+
+![image](https://github.com/user-attachments/assets/ef471225-3e9b-4690-81e1-2c201924685a)
 
 ## 📁 Project Structure
 
