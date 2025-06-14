@@ -56,8 +56,7 @@ class Template
         $hasAccess = array_intersect($user->roles, WPDOCSIFY_ALLOWED_ROLES);
 
         if (empty($hasAccess)) {
-            wp_redirect(home_url());
-            exit;
+            return WPDOCSIFY_DIR . '/src/templates/access-denied.php';
         }
 
         return $page_docsify;

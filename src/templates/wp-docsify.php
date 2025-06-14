@@ -11,7 +11,7 @@
 
         <link rel="icon" type="image/x-icon" href="<?php echo esc_url(get_site_icon_url()); ?>">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
-        <link rel="stylesheet" href="<?php echo esc_url(WPDOCSIFY_URL); ?>/src/docs/_assets/style.css">
+        <link rel="stylesheet" href="<?php echo esc_url(WPDOCSIFY_URL); ?>/src/assets/style.css">
 
         <title><?php echo esc_html__('Documentation', 'wpdocsify') . ' - ' . get_bloginfo('name'); ?></title>
     </head>

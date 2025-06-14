@@ -10,34 +10,50 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: ChatGPT\n"
 
-#: src/template-wp-docsify.php:20
+#: src/templates/wp-docsify.php:20
 msgid "Documentation - %s"
-msgstr ""
+msgstr "Documentation - %s"
 
-#: src/template-wp-docsify.php:38
+#: src/templates/wp-docsify.php:38
 msgid "Copy"
-msgstr ""
+msgstr "Copy"
 
-#: src/template-wp-docsify.php:39
+#: src/templates/wp-docsify.php:39
 msgid "Error"
-msgstr ""
+msgstr "Error"
 
-#: src/template-wp-docsify.php:40
+#: src/templates/wp-docsify.php:40
 msgid "Copied"
-msgstr ""
+msgstr "Copied"
 
-#: src/template-wp-docsify.php:44
+#: src/templates/wp-docsify.php:44
 msgid "Previous"
-msgstr ""
+msgstr "Previous"
 
-#: src/template-wp-docsify.php:45
+#: src/templates/wp-docsify.php:45
 msgid "Next"
-msgstr ""
+msgstr "Next"
 
-#: src/template-wp-docsify.php:50
+#: src/templates/wp-docsify.php:50
 msgid "Search..."
-msgstr ""
+msgstr "Search..."
 
-#: src/template-wp-docsify.php:51
+#: src/templates/wp-docsify.php:51
 msgid "No results found"
-msgstr ""
+msgstr "No results found"
+
+#: src/templates/access-denied.php:20
+msgid "Access Denied"
+msgstr "Access Denied"
+
+#: src/templates/access-denied.php:26
+msgid "Sorry, you do not have permission to access this documentation."
+msgstr "Sorry, you do not have permission to access this documentation."
+
+#: src/templates/access-denied.php:29
+msgid "Your account may not have the necessary permissions"
+msgstr "Your account may not have the necessary permissions"
+
+#: src/templates/access-denied.php:36
+msgid "Back to Home"
+msgstr "Back to Home"
