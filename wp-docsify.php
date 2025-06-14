@@ -37,16 +37,11 @@ if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
 }
 
 require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/config.php';
 
 use WPDocsify\Activator;
 use WPDocsify\Deactivator;
 use WPDocsify\Core;
-
-// Currently plugin version.
-define('WPDocsify_VERSION', '1.0.0');
-define('WPDocsify_NAME', 'WP Docsify');
-define('WPDocsify_DIR', plugin_dir_path(__FILE__));
-define('WPDocsify_URL', plugin_dir_url(__FILE__));
 
 /**
  * The code that runs during plugin activation.
