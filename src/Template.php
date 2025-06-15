@@ -32,11 +32,11 @@ class Template
 
     public function renderTemplate($page_template)
     {
-        $page_docsify = WPDOCSIFY_DIR . '/src/templates/wp-docsify.php';
-
         if (get_page_template_slug() !== 'template-wp-docsify.php') {
             return $page_template;
         }
+
+        $page_docsify = WPDOCSIFY_DIR . '/src/templates/wp-docsify.php';
 
         if (defined('WPDOCSIFY_IS_RESTRICTED') && !WPDOCSIFY_IS_RESTRICTED) {
             return $page_docsify;
