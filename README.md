@@ -47,7 +47,7 @@ wp-content/plugins/wp-docsify/
 1. Add your documentation `.md` files inside the directory:
 
 ```
-wp-content/plugins/wp-docsify/src/docs/
+wp-content/plugins/wp-docsify/src/docs/{locale}/
 ```
 
 2. The `README.md` file will be used as the documentation's home page.
