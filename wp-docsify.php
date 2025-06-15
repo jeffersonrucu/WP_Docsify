@@ -6,7 +6,7 @@
  * Plugin Name: WP Docsify
  * Plugin URI: https://github.com/jeffersonrucu/WP_Docsify
  * Description: Docsify for WordPress in a simple and practical way using the entire WordPress structure.
- * Version:     1.0.0
+ * Version:     2.0.0
  * Author:      Jefferson Oliveira
  * Author URI:  https://github.com/jeffersonrucu
  * License:     GPL-2.0+
