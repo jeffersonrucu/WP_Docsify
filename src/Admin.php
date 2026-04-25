@@ -2,25 +2,58 @@
 
 namespace WPDocsify;
 
+use WPDocsify\Admin\Editor;
+
 if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
 class Admin {
 
+    private Editor $editor;
+
+    public function __construct() {
+        $this->editor = new Editor();
+    }
+
     public function run(): void {
+        $this->editor->run();
         add_action( 'admin_menu', [ $this, 'addMenu' ] );
         add_action( 'admin_init', [ $this, 'registerSettings' ] );
     }
 
     public function addMenu(): void {
-        add_options_page(
-            __( 'WP Docsify Settings', 'wp-docsify' ),
+        add_menu_page(
+            __( 'WP Docsify', 'wp-docsify' ),
             __( 'WP Docsify', 'wp-docsify' ),
             'manage_options',
             'wp-docsify',
-            [ $this, 'renderPage' ]
+            [ $this, 'renderSettingsPage' ],
+            'dashicons-media-document',
+            30
         );
+
+        add_submenu_page(
+            'wp-docsify',
+            __( 'Settings', 'wp-docsify' ),
+            __( 'Settings', 'wp-docsify' ),
+            'manage_options',
+            'wp-docsify',
+            [ $this, 'renderSettingsPage' ]
+        );
+
+        $editor_hook = add_submenu_page(
+            'wp-docsify',
+            __( 'Documentation Editor', 'wp-docsify' ),
+            __( 'Editor', 'wp-docsify' ),
+            'manage_options',
+            'wp-docsify-editor',
+            [ $this->editor, 'renderPage' ]
+        );
+
+        if ( $editor_hook ) {
+            $this->editor->setHook( $editor_hook );
+        }
     }
 
     public function registerSettings(): void {
@@ -32,39 +65,13 @@ class Admin {
 
         add_settings_section( 'wp_docsify_access', __( 'Access Control', 'wp-docsify' ), null, 'wp-docsify' );
 
-        add_settings_field(
-            'is_restricted',
-            __( 'Enable Restriction', 'wp-docsify' ),
-            [ $this, 'renderIsRestricted' ],
-            'wp-docsify',
-            'wp_docsify_access'
-        );
-
-        add_settings_field(
-            'allowed_roles',
-            __( 'Allowed Roles', 'wp-docsify' ),
-            [ $this, 'renderAllowedRoles' ],
-            'wp-docsify',
-            'wp_docsify_access'
-        );
+        add_settings_field( 'is_restricted', __( 'Enable Restriction', 'wp-docsify' ), [ $this, 'renderIsRestricted' ], 'wp-docsify', 'wp_docsify_access' );
+        add_settings_field( 'allowed_roles', __( 'Allowed Roles', 'wp-docsify' ), [ $this, 'renderAllowedRoles' ], 'wp-docsify', 'wp_docsify_access' );
 
         add_settings_section( 'wp_docsify_appearance', __( 'Appearance', 'wp-docsify' ), null, 'wp-docsify' );
 
-        add_settings_field(
-            'theme_color',
-            __( 'Theme Color', 'wp-docsify' ),
-            [ $this, 'renderThemeColor' ],
-            'wp-docsify',
-            'wp_docsify_appearance'
-        );
-
-        add_settings_field(
-            'repo_url',
-            __( 'Repository URL', 'wp-docsify' ),
-            [ $this, 'renderRepoUrl' ],
-            'wp-docsify',
-            'wp_docsify_appearance'
-        );
+        add_settings_field( 'theme_color', __( 'Theme Color', 'wp-docsify' ), [ $this, 'renderThemeColor' ], 'wp-docsify', 'wp_docsify_appearance' );
+        add_settings_field( 'repo_url', __( 'Repository URL', 'wp-docsify' ), [ $this, 'renderRepoUrl' ], 'wp-docsify', 'wp_docsify_appearance' );
     }
 
     /**
@@ -77,17 +84,14 @@ class Admin {
 
         $valid_roles = array_keys( wp_roles()->roles );
         if ( isset( $input['allowed_roles'] ) && is_array( $input['allowed_roles'] ) ) {
-            $output['allowed_roles'] = array_values(
-                array_intersect( $input['allowed_roles'], $valid_roles )
-            );
+            $output['allowed_roles'] = array_values( array_intersect( $input['allowed_roles'], $valid_roles ) );
         } else {
             $output['allowed_roles'] = [];
         }
 
-        $color                = sanitize_hex_color( $input['theme_color'] ?? '' );
+        $color                 = sanitize_hex_color( $input['theme_color'] ?? '' );
         $output['theme_color'] = $color ?: WPDOCSIFY_DEFAULT_THEME_COLOR;
-
-        $output['repo_url'] = esc_url_raw( $input['repo_url'] ?? '' );
+        $output['repo_url']    = esc_url_raw( $input['repo_url'] ?? '' );
 
         return $output;
     }
@@ -106,9 +110,8 @@ class Admin {
     public function renderAllowedRoles(): void {
         $options = get_option( 'wp_docsify_options', [] );
         $allowed = $options['allowed_roles'] ?? WPDOCSIFY_DEFAULT_ALLOWED_ROLES;
-        $roles   = wp_roles()->roles;
 
-        foreach ( $roles as $role_key => $role_data ) {
+        foreach ( wp_roles()->roles as $role_key => $role_data ) {
             $checked = in_array( $role_key, $allowed, true );
             ?>
             <label style="display:block;margin-bottom:5px;">
@@ -120,7 +123,6 @@ class Admin {
             </label>
             <?php
         }
-
         echo '<p class="description">' . esc_html__( 'Select which roles can view the documentation.', 'wp-docsify' ) . '</p>';
     }
 
@@ -128,9 +130,7 @@ class Admin {
         $options = get_option( 'wp_docsify_options', [] );
         $color   = $options['theme_color'] ?? WPDOCSIFY_DEFAULT_THEME_COLOR;
         ?>
-        <input type="color"
-               name="wp_docsify_options[theme_color]"
-               value="<?php echo esc_attr( $color ); ?>">
+        <input type="color" name="wp_docsify_options[theme_color]" value="<?php echo esc_attr( $color ); ?>">
         <p class="description"><?php esc_html_e( 'Accent color used by Docsify.', 'wp-docsify' ); ?></p>
         <?php
     }
@@ -148,7 +148,7 @@ class Admin {
         <?php
     }
 
-    public function renderPage(): void {
+    public function renderSettingsPage(): void {
         if ( ! current_user_can( 'manage_options' ) ) {
             return;
         }
@@ -168,35 +168,21 @@ class Admin {
             </form>
 
             <hr>
-
-            <h2><?php esc_html_e( 'Documentation Files', 'wp-docsify' ); ?></h2>
+            <h2><?php esc_html_e( 'How to Use', 'wp-docsify' ); ?></h2>
+            <ol>
+                <li><?php esc_html_e( 'Go to WP Docsify → Editor to write your documentation.', 'wp-docsify' ); ?></li>
+                <li><?php esc_html_e( 'Create a WordPress page and set its template to WP Docsify.', 'wp-docsify' ); ?></li>
+                <li><?php esc_html_e( 'Publish the page and visit it.', 'wp-docsify' ); ?></li>
+            </ol>
             <p>
                 <?php
                 printf(
                     /* translators: %s: file path */
-                    esc_html__( 'Place your Markdown (.md) files inside: %s', 'wp-docsify' ),
-                    '<code>' . esc_html( $docs_dir ) . '/{locale}/</code>'
+                    esc_html__( 'Documentation files are stored in: %s', 'wp-docsify' ),
+                    '<code>' . esc_html( $docs_dir ) . '/</code>'
                 );
                 ?>
             </p>
-            <p>
-                <?php esc_html_e( 'Supported locales: en_US, pt_BR. README.md is the home page.', 'wp-docsify' ); ?>
-            </p>
-
-            <h2><?php esc_html_e( 'How to Use', 'wp-docsify' ); ?></h2>
-            <ol>
-                <li><?php esc_html_e( 'Create a WordPress page.', 'wp-docsify' ); ?></li>
-                <li>
-                    <?php
-                    printf(
-                        /* translators: %s: template name */
-                        esc_html__( 'In the Page Attributes panel, set the template to %s.', 'wp-docsify' ),
-                        '<strong>WP Docsify</strong>'
-                    );
-                    ?>
-                </li>
-                <li><?php esc_html_e( 'Publish the page and visit it to see your documentation.', 'wp-docsify' ); ?></li>
-            </ol>
         </div>
         <?php
     }
